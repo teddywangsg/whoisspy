@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=portrait">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="谁是卧底">
+  <title>谁是卧底 - 新加坡版</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="page active" id="setup-page">
+      <h1>谁是卧底<br><small>新加坡版</small></h1>
+      
+      <div class="instruction-box">
+        <p>🎮 4-12人游戏</p>
+        <p>🎯 找出卧底或隐藏身份</p>
+        <p>📱 传递手机看词</p>
+      </div>
+      
+      <div class="setup-section">
+        <label class="setup-label">玩家数量</label>
+        <div class="number-selector" id="player-count-selector">
+          <button type="button" class="number-btn" data-value="4">4</button>
+          <button type="button" class="number-btn" data-value="5">5</button>
+          <button type="button" class="number-btn" data-value="6">6</button>
+          <button type="button" class="number-btn" data-value="7">7</button>
+          <button type="button" class="number-btn" data-value="8">8</button>
+          <button type="button" class="number-btn" data-value="9">9</button>
+          <button type="button" class="number-btn" data-value="10">10</button>
+          <button type="button" class="number-btn" data-value="11">11</button>
+          <button type="button" class="number-btn" data-value="12">12</button>
+        </div>
+        <div class="selected-info" id="selected-player-count">已选择: 4人</div>
+      </div>
+      
+      <div class="setup-section">
+        <label class="setup-label">卧底数量</label>
+        <div class="number-selector" id="undercover-count-selector">
+          <button type="button" class="number-btn" data-value="1">1</button>
+          <button type="button" class="number-btn active" data-value="2">2</button>
+          <button type="button" class="number-btn" data-value="3">3</button>
+        </div>
+        <div class="selected-info" id="selected-undercover-count">已选择: 2个卧底</div>
+      </div>
+      
+      <button type="button" class="btn btn-success" id="start-game-btn">开始游戏</button>
+    </div>
+    
+    <div class="page" id="show-word-page">
+      <div class="game-status">
+        <div class="current-player" id="current-player-name"></div>
+        <div class="pass-device">👆 点击屏幕显示词语</div>
+      </div>
+      
+      <div class="word-card" id="word-cover">
+        <div class="cover-text">
+          <div class="cover-icon">👆</div>
+          <div>点击显示词语</div>
+          <div class="cover-hint">不要让其他人看到</div>
+        </div>
+      </div>
+      
+      <div class="word-card" id="word-display" style="display:none;">
+        <div class="word-hint">你的词</div>
+        <div class="word-text" id="word-text"></div>
+        <div class="word-action-hint">👇 记住后点击下方按钮</div>
+      </div>
+      
+      <button type="button" class="btn btn-primary" id="next-word-btn" style="display:none;">✓ 确认已看，传给下一位</button>
+      <div class="warning-message" id="warning-message" style="display:none;">
+        <div class="warning-icon">⚠️</div>
+        <div>请先点击屏幕查看词语</div>
+      </div>
+    </div>
+    
+    <div class="page" id="discussion-page">
+      <h2 id="discussion-title">讨论时间</h2>
+      
+      <div class="instruction-box">
+        <p>🗣️ 描述你的词</p>
+        <p>🤔 听别人的描述</p>
+        <p>🕵️ 找出卧底！</p>
+      </div>
+      
+      <button type="button" class="btn btn-primary" id="start-discussion-btn">开始投票</button>
+    </div>
+    
+    <div class="page" id="vote-page">
+      <h2 id="vote-title">选择淘汰</h2>
+      
+      <div class="instruction-box">
+        <p>讨论结束后，选择要淘汰的玩家</p>
+      </div>
+      
+      <div class="vote-section" id="vote-section"></div>
+    </div>
+    
+    <div class="page" id="eliminate-result-page">
+      <h2>淘汰结果</h2>
+      
+      <div class="eliminate-result" id="eliminate-result">
+        <div class="eliminated-player-name" id="eliminated-player-name"></div>
+        <div class="eliminated-player-role" id="eliminated-player-role"></div>
+        <div class="eliminated-player-word" id="eliminated-player-word"></div>
+      </div>
+      
+      <div class="game-status-message" id="game-status-message"></div>
+      
+      <button type="button" class="btn btn-primary" id="continue-btn" style="display:none;">继续下一轮</button>
+      <button type="button" class="btn btn-success" id="view-final-result-btn" style="display:none;">查看最终结果</button>
+    </div>
+    
+    <div class="page" id="result-page">
+      <div class="winner-announcement" id="winner-section">
+        <div class="winner-title" id="winner-title"></div>
+      </div>
+      
+      <div class="reveal-section">
+        <div class="reveal-title">揭晓答案</div>
+        <div id="reveal-list"></div>
+      </div>
+      
+      <button type="button" class="btn btn-success" id="play-again-btn">再玩一次</button>
+    </div>
+  </div>
+  
+  <script src="words.js"></script>
+  <script src="db.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

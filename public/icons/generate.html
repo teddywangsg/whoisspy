@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons</title>
+  <style>
+    body { margin: 20px; font-family: Arial; }
+    canvas { margin: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Generating Icons...</h1>
+  <div id="output"></div>
+  
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    
+    async function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      
+      // Rounded rect
+      const radius = size * 0.2;
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Emoji (detective)
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🕵️', size / 2, size * 0.4);
+      
+      // Chinese text
+      ctx.font = `bold ${size * 0.2}px Arial`;
+      ctx.fillStyle = 'white';
+      ctx.fillText('卧底', size / 2, size * 0.65);
+      
+      return canvas.toDataURL('image/png');
+    }
+    
+    async function downloadAll() {
+      const output = document.getElementById('output');
+      
+      for (const size of sizes) {
+        const dataUrl = await generateIcon(size);
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `icon-${size}x${size}.png`;
+        link.textContent = `Download ${size}x${size}`;
+        link.style.display = 'block';
+        link.style.margin = '10px';
+        output.appendChild(link);
+        
+        // Auto download
+        link.click();
+      }
+      
+      output.innerHTML += '<p>All icons generated!</p>';
+    }
+    
+    downloadAll();
+  </script>
+</body>
+</html>

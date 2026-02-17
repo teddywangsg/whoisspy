@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+test-results/
+playwright-report/
+test-e2e.js
+test-debug.js
+test-final.js
+test-manual.js
+test-error.js
+test-structure.js
+test-console.js
+test-all.js
+test-game-flow.js
+test-secret.js
+verify-fix.js
+
+# Temporary files
+*.tmp
+.cache/
+
+# Bun
+bun.lockb

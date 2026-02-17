@@ -1,0 +1,528 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 10px;
+  color: #333;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  min-height: calc(100vh - 20px);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.page {
+  padding: 20px;
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+h1 {
+  text-align: center;
+  color: #667eea;
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+h2 {
+  color: #764ba2;
+  font-size: 22px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.btn-secondary:hover {
+  background: #667eea;
+  color: white;
+}
+
+.btn-danger {
+  background: #ff6b6b;
+  color: white;
+}
+
+.btn-success {
+  background: #51cf66;
+  color: white;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.input {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #667eea;
+}
+
+.player-list {
+  margin: 20px 0;
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.player-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.player-delete {
+  color: #ff6b6b;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.word-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 40px 20px;
+  border-radius: 20px;
+  text-align: center;
+  margin: 20px 0;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.word-text {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.word-hint {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.role-civilian {
+  background: #51cf66;
+}
+
+.role-undercover {
+  background: #ff6b6b;
+}
+
+.vote-section {
+  margin: 20px 0;
+}
+
+.vote-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.vote-count {
+  background: #667eea;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-weight: 600;
+}
+
+.vote-btn {
+  padding: 8px 20px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.vote-btn:disabled {
+  background: #ccc;
+}
+
+.round-history {
+  margin-top: 20px;
+}
+
+.round-item {
+  padding: 15px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.round-title {
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+.eliminated {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.cover-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.cover-text {
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  padding: 20px;
+}
+
+.instruction-box {
+  background: #e7f3ff;
+  border-left: 4px solid #667eea;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.instruction-box p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.setup-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.setup-label {
+  display: block;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.number-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.number-btn {
+  width: 45px;
+  height: 45px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.number-btn:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.number-btn.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.selected-info {
+  text-align: center;
+  color: #764ba2;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.timer {
+  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  color: #667eea;
+  margin: 20px 0;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  overflow-x: auto;
+}
+
+.category-tab {
+  padding: 10px 20px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.category-tab.active {
+  background: #667eea;
+  color: white;
+}
+
+.game-status {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.current-player {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pass-device {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.reveal-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff3cd;
+  border-radius: 12px;
+  border: 2px solid #ffc107;
+}
+
+.reveal-title {
+  font-weight: 700;
+  color: #856404;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.reveal-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #ffc107;
+}
+
+.reveal-item:last-child {
+  border-bottom: none;
+}
+
+.winner-announcement {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+  color: white;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.winner-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.winner-team {
+  font-size: 20px;
+  opacity: 0.9;
+}
+
+.eliminate-result {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.eliminated-player-name {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.eliminated-player-role {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.role-reveal-civilian {
+  background: #51cf66;
+}
+
+.role-reveal-undercover {
+  background: #ff6b6b;
+}
+
+.eliminated-player-word {
+  font-size: 18px;
+  margin-top: 15px;
+  opacity: 0.95;
+}
+
+.game-status-message {
+  text-align: center;
+  padding: 20px;
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #764ba2;
+  background: #f0f0f0;
+  border-radius: 12px;
+}
+
+.cover-icon {
+  font-size: 64px;
+  margin-bottom: 15px;
+}
+
+.cover-hint {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+
+.word-action-hint {
+  font-size: 16px;
+  margin-top: 20px;
+  opacity: 0.9;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.5; }
+}
+
+.warning-message {
+  text-align: center;
+  padding: 15px;
+  margin-top: 15px;
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  color: #856404;
+  font-weight: 600;
+}
+
+.warning-icon {
+  font-size: 32px;
+  margin-bottom: 5px;
+}
+
+/* 强制竖屏 */
+@media screen and (orientation: landscape) and (max-width: 768px) {
+  body::before {
+    content: "请旋转手机至竖屏模式";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 600;
+    z-index: 9999;
+    text-align: center;
+    padding: 20px;
+  }
+}
