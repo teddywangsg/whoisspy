@@ -189,6 +189,26 @@ class GameDatabase {
       })
     ]);
   }
+
+  async saveSetting(key, value) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('settings', 'readwrite');
+      const store = tx.objectStore('settings');
+      const request = store.put({ key, value });
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async getSetting(key) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('settings', 'readonly');
+      const store = tx.objectStore('settings');
+      const request = store.get(key);
+      request.onsuccess = () => resolve(request.result ? request.result.value : null);
+      request.onerror = () => reject(request.error);
+    });
+  }
 }
 
 const gameDB = new GameDatabase();

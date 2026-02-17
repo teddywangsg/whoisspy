@@ -1,88 +1,89 @@
-# 谁是卧底 - 新加坡版
+# Who is the Spy - Singapore Edition
 
-一个适合新加坡家庭三代同堂的聚会游戏，支持中英文双语。
+> [中文](./README.zh.md) | English
 
-## 游戏特点
+A party game perfect for Singaporean families across three generations, supporting bilingual Chinese-English display.
 
-- **适合三代同堂**：爷爷奶奶、父母、小朋友都能参与
-- **新加坡本土词汇**：咖椰吐司、肉骨茶、巴刹、组屋等
-- **手机传递玩法**：一人看词后传给下一个人，适合聚会场景
-- **中英文双语显示**：词汇同时显示中英文
-- **PWA支持**：可以安装到手机桌面，离线也能玩
-- **自动竖屏锁定**：确保手机传递时显示正常
+## Game Features
 
-## 技术栈
+- **Multi-generational fun**: Grandparents, parents, and kids can all play together
+- **Singaporean vocabulary**: Kaya toast, Bak Kut Teh, wet market (pasar), HDB flats, etc.
+- **Pass-the-phone gameplay**: One player views their word and passes to the next, perfect for gatherings
+- **Bilingual display**: Words shown in both Chinese and English
+- **PWA support**: Install to your phone's home screen and play offline
+- **Portrait lock**: Ensures proper display when passing phones around
 
-- **后端**：Bun + TypeScript
-- **前端**：原生 HTML + jQuery
-- **数据库**：IndexedDB（浏览器本地存储）
-- **测试**：Bun Test + Playwright
+## Tech Stack
 
-## 快速开始
+- **Backend**: Bun + TypeScript
+- **Frontend**: Vanilla HTML + jQuery
+- **Database**: IndexedDB (browser local storage)
+- **Testing**: Bun Test + Playwright
 
-### 安装依赖
+## Quick Start
+
+### Install Dependencies
 
 ```bash
 bun install
 ```
 
-### 运行开发服务器
+### Run Development Server
 
 ```bash
 bun run dev
 ```
 
-### 运行测试
+### Run Tests
 
 ```bash
-# 单元测试
+# Unit tests
 bun test
 
-# E2E测试
+# E2E tests
 bun run test-all.js
 ```
 
-### 生产部署
+### Production Deployment
 
 ```bash
 bun run server.ts
 ```
 
-服务器默认运行在 http://localhost:3456
+Server runs at http://localhost:3456 by default
 
-## 游戏玩法
+## How to Play
 
-1. **设置游戏**：选择玩家数量（4-12人）和卧底数量
-2. **看词阶段**：所有玩家轮流看自己的词（只看一次）
-3. **讨论投票**：描述词语，找出卧底，投票淘汰可疑玩家
-4. **揭晓结果**：淘汰后只显示谁被淘汰，不暴露身份
-5. **循环进行**：直到分出胜负，最后揭晓所有人的身份和词语
+1. **Setup**: Choose player count (4-12) and spy count
+2. **View Words**: Players take turns viewing their word (one time only)
+3. **Discussion & Voting**: Describe your word, find the spy, vote to eliminate suspicious players
+4. **Reveal Results**: After elimination, only shows who was eliminated, not their role
+5. **Continue**: Repeat until a winner is determined, then reveal all roles and words
 
-## 词库分类
+## Word Categories
 
-- 本地食物：海南鸡饭、肉骨茶、咖椰吐司等
-- 热带水果：榴莲、红毛丹、山竹等
-- 日常用语：巴刹、组屋、德士、冷气等
-- 家庭称谓：公公、婆婆、舅舅、阿姨等
-- 节日庆祝：红包、灯笼、月饼、粽子等
+- Local Food: Hainanese chicken rice, Bak Kut Teh, Kaya toast, etc.
+- Tropical Fruits: Durian, Rambutan, Mangosteen, etc.
+- Daily Terms: Wet market (pasar), HDB flats, taxi, aircon, etc.
+- Family Terms: Grandpa, Grandma, Uncle, Auntie, etc.
+- Festivals: Red packets, lanterns, mooncakes, rice dumplings, etc.
 
-## 开发
+## Development
 
-```bash
-# 项目结构
+```
 whoisspy/
 ├── public/
-│   ├── index.html      # 主页面
-│   ├── style.css       # 样式
-│   ├── game.js         # 游戏逻辑
-│   ├── words.js        # 词汇库
-│   ├── db.js           # IndexedDB封装
-│   ├── manifest.json   # PWA配置
+│   ├── index.html      # Main page
+│   ├── style.css       # Styles
+│   ├── game.js         # Game logic
+│   ├── words.js        # Word database
+│   ├── db.js           # IndexedDB wrapper
+│   ├── manifest.json   # PWA config
 │   ├── sw.js           # Service Worker
-│   └── icons/          # 图标
+│   └── icons/          # Icons
 ├── test/
-│   └── game-logic.test.js  # 单元测试
-├── server.ts           # Bun服务器
+│   └── game-logic.test.js  # Unit tests
+├── server.ts           # Bun server
 └── package.json
 ```
 

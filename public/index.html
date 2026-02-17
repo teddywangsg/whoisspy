@@ -21,16 +21,21 @@
 <body>
   <div class="container">
     <div class="page active" id="setup-page">
-      <h1>谁是卧底<br><small>新加坡版</small></h1>
+      <div class="header-bar">
+        <div class="lang-switch">
+          <button type="button" class="lang-btn" id="lang-btn">English</button>
+        </div>
+      </div>
+      <h1 data-i18n="title">Who is the Spy<br><small data-i18n="subtitle">Singapore Edition</small></h1>
       
       <div class="instruction-box">
-        <p>🎮 4-12人游戏</p>
-        <p>🎯 找出卧底或隐藏身份</p>
-        <p>📱 传递手机看词</p>
+        <p data-i18n="gameDescription1">🎮 4-12 players</p>
+        <p data-i18n="gameDescription2">🎯 Find the spy or hide your identity</p>
+        <p data-i18n="gameDescription3">📱 Pass phone to view word</p>
       </div>
       
       <div class="setup-section">
-        <label class="setup-label">玩家数量</label>
+        <label class="setup-label" data-i18n="playerCount">Player Count</label>
         <div class="number-selector" id="player-count-selector">
           <button type="button" class="number-btn" data-value="4">4</button>
           <button type="button" class="number-btn" data-value="5">5</button>
@@ -42,73 +47,73 @@
           <button type="button" class="number-btn" data-value="11">11</button>
           <button type="button" class="number-btn" data-value="12">12</button>
         </div>
-        <div class="selected-info" id="selected-player-count">已选择: 4人</div>
+        <div class="selected-info" id="selected-player-count">Selected: 4 players</div>
       </div>
       
       <div class="setup-section">
-        <label class="setup-label">卧底数量</label>
+        <label class="setup-label" data-i18n="undercoverCount">Spy Count</label>
         <div class="number-selector" id="undercover-count-selector">
           <button type="button" class="number-btn" data-value="1">1</button>
           <button type="button" class="number-btn active" data-value="2">2</button>
           <button type="button" class="number-btn" data-value="3">3</button>
         </div>
-        <div class="selected-info" id="selected-undercover-count">已选择: 2个卧底</div>
+        <div class="selected-info" id="selected-undercover-count">Selected: 2 spies</div>
       </div>
       
-      <button type="button" class="btn btn-success" id="start-game-btn">开始游戏</button>
+      <button type="button" class="btn btn-success" id="start-game-btn" data-i18n="startGame">Start Game</button>
     </div>
     
     <div class="page" id="show-word-page">
       <div class="game-status">
         <div class="current-player" id="current-player-name"></div>
-        <div class="pass-device">👆 点击屏幕显示词语</div>
+        <div class="pass-device" data-i18n="tapToShow">👆 Tap to reveal word</div>
       </div>
       
       <div class="word-card" id="word-cover">
         <div class="cover-text">
           <div class="cover-icon">👆</div>
-          <div>点击显示词语</div>
-          <div class="cover-hint">不要让其他人看到</div>
+          <div data-i18n="tapToShowWord">Tap to reveal word</div>
+          <div class="cover-hint" data-i18n="dontLetOthersSee">Do not let others see</div>
         </div>
       </div>
       
       <div class="word-card" id="word-display" style="display:none;">
-        <div class="word-hint">你的词</div>
+        <div class="word-hint" data-i18n="yourWord">Your Word</div>
         <div class="word-text" id="word-text"></div>
-        <div class="word-action-hint">👇 记住后点击下方按钮</div>
+        <div class="word-action-hint" data-i18n="rememberThenClick">👇 Remember then click below</div>
       </div>
       
-      <button type="button" class="btn btn-primary" id="next-word-btn" style="display:none;">✓ 确认已看，传给下一位</button>
+      <button type="button" class="btn btn-primary" id="next-word-btn" style="display:none;" data-i18n="confirmSeen">✓ Done, pass to next</button>
       <div class="warning-message" id="warning-message" style="display:none;">
         <div class="warning-icon">⚠️</div>
-        <div>请先点击屏幕查看词语</div>
+        <div data-i18n="pleaseViewFirst">Please tap to view word first</div>
       </div>
     </div>
     
     <div class="page" id="discussion-page">
-      <h2 id="discussion-title">讨论时间</h2>
+      <h2 id="discussion-title" data-i18n="discussion">Discussion Time</h2>
       
       <div class="instruction-box">
-        <p>🗣️ 描述你的词</p>
-        <p>🤔 听别人的描述</p>
-        <p>🕵️ 找出卧底！</p>
+        <p data-i18n="describeHint">🗣️ Describe your word</p>
+        <p data-i18n="listenHint">🤔 Listen to others</p>
+        <p data-i18n="findSpy">🕵️ Find the spy!</p>
       </div>
       
-      <button type="button" class="btn btn-primary" id="start-discussion-btn">开始投票</button>
+      <button type="button" class="btn btn-primary" id="start-discussion-btn" data-i18n="startVote">Start Voting</button>
     </div>
     
     <div class="page" id="vote-page">
-      <h2 id="vote-title">选择淘汰</h2>
+      <h2 id="vote-title" data-i18n="selectEliminate">Select to Eliminate</h2>
       
       <div class="instruction-box">
-        <p>讨论结束后，选择要淘汰的玩家</p>
+        <p data-i18n="selectPlayerToEliminate">Select a player to eliminate</p>
       </div>
       
       <div class="vote-section" id="vote-section"></div>
     </div>
     
     <div class="page" id="eliminate-result-page">
-      <h2>淘汰结果</h2>
+      <h2 data-i18n="eliminateResult">Elimination Result</h2>
       
       <div class="eliminate-result" id="eliminate-result">
         <div class="eliminated-player-name" id="eliminated-player-name"></div>
@@ -118,8 +123,8 @@
       
       <div class="game-status-message" id="game-status-message"></div>
       
-      <button type="button" class="btn btn-primary" id="continue-btn" style="display:none;">继续下一轮</button>
-      <button type="button" class="btn btn-success" id="view-final-result-btn" style="display:none;">查看最终结果</button>
+      <button type="button" class="btn btn-primary" id="continue-btn" style="display:none;" data-i18n="continueNextRound">Continue Next Round</button>
+      <button type="button" class="btn btn-success" id="view-final-result-btn" style="display:none;" data-i18n="viewFinalResult">View Final Result</button>
     </div>
     
     <div class="page" id="result-page">
@@ -128,11 +133,11 @@
       </div>
       
       <div class="reveal-section">
-        <div class="reveal-title">揭晓答案</div>
+        <div class="reveal-title" data-i18n="revealAnswer">Reveal Answer</div>
         <div id="reveal-list"></div>
       </div>
       
-      <button type="button" class="btn btn-success" id="play-again-btn">再玩一次</button>
+      <button type="button" class="btn btn-success" id="play-again-btn" data-i18n="playAgain">Play Again</button>
     </div>
   </div>
   

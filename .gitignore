@@ -20,6 +20,16 @@ Thumbs.db
 *.swo
 *~
 
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
 # Testing
 test-results/
 playwright-report/
@@ -33,7 +43,10 @@ test-console.js
 test-all.js
 test-game-flow.js
 test-secret.js
+test-language.py
 verify-fix.js
+*.png
+screenshots/
 
 # Temporary files
 *.tmp

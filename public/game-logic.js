@@ -6,24 +6,25 @@ const wordPairs = [
 ];
 
 export class GameLogic {
-  constructor(playerCount, undercoverCount, wordPair) {
+  constructor(playerCount, undercoverCount, wordPair, translations = null) {
     this.playerCount = playerCount;
     this.undercoverCount = undercoverCount;
     this.wordPair = wordPair;
+    this.translations = translations;
     this.players = [];
     this.currentRound = 1;
     this.eliminatedPlayers = [];
     this.gameStatus = 'active';
     this.winner = null;
     
-    this.initPlayers();
+    this.initPlayers(translations?.player || 'Player');
   }
   
-  initPlayers() {
+  initPlayers(playerNamePrefix = 'Player') {
     for (let i = 1; i <= this.playerCount; i++) {
       this.players.push({
         id: i,
-        name: `玩家${i}`,
+        name: `${playerNamePrefix} ${i}`,
         eliminated: false,
         role: null,
         word: null
@@ -61,10 +62,14 @@ export class GameLogic {
     return this.players.filter(p => !p.eliminated && p.role === 'civilian').length;
   }
   
+  t(key) {
+    return this.translations?.[key] || key;
+  }
+
   eliminatePlayer(playerId) {
     const player = this.players.find(p => p.id === playerId);
     if (!player || player.eliminated) {
-      return { success: false, error: '玩家不存在或已被淘汰' };
+      return { success: false, error: this.t('playerNotFoundOrEliminated') };
     }
     
     player.eliminated = true;
@@ -90,35 +95,35 @@ export class GameLogic {
   checkGameEnd() {
     const activeUndercover = this.getActiveUndercoverCount();
     const activeCivilian = this.getActiveCivilianCount();
-    
+
     if (activeUndercover === 0) {
       this.gameStatus = 'ended';
       this.winner = 'civilian';
       return {
         ended: true,
         winner: 'civilian',
-        message: '平民获胜！所有卧底已被找出。'
+        message: this.t('allUndercoverFound')
       };
     }
-    
+
     if (activeUndercover >= activeCivilian) {
       this.gameStatus = 'ended';
       this.winner = 'undercover';
       return {
         ended: true,
         winner: 'undercover',
-        message: '卧底获胜！卧底人数不少于平民。'
+        message: this.t('undercoverOutnumberCivilian')
       };
     }
-    
+
     return { ended: false, winner: null, message: null };
   }
   
   nextRound() {
     if (this.gameStatus === 'ended') {
-      return { success: false, error: '游戏已结束' };
+      return { success: false, error: this.t('gameEnded') };
     }
-    
+
     this.currentRound++;
     return { success: true, currentRound: this.currentRound };
   }
@@ -164,16 +169,20 @@ export function getRandomWordPair() {
   return wordPairs[index];
 }
 
-export function createGame(playerCount, undercoverCount, wordPair = null) {
-  if (playerCount < 4 || playerCount > 12) {
-    throw new Error('玩家数量必须在4-12人之间');
-  }
-  
+export function createGame(playerCount, undercoverCount, wordPair = null, translations = null) {
   const maxUndercover = Math.max(1, Math.floor((playerCount - 1) / 2));
-  if (undercoverCount < 1 || undercoverCount > maxUndercover) {
-    throw new Error(`卧底数量必须在1-${maxUndercover}之间`);
+  const playerCountError = translations?.playerCountError || 'Player count must be between 4-12';
+  const undercoverCountError = translations?.undercoverCountError?.replace('{0}', maxUndercover) 
+    || `Spy count must be between 1-${maxUndercover}`;
+
+  if (playerCount < 4 || playerCount > 12) {
+    throw new Error(playerCountError);
   }
-  
+
+  if (undercoverCount < 1 || undercoverCount > maxUndercover) {
+    throw new Error(undercoverCountError);
+  }
+
   const selectedWordPair = wordPair || getRandomWordPair();
-  return new GameLogic(playerCount, undercoverCount, selectedWordPair);
+  return new GameLogic(playerCount, undercoverCount, selectedWordPair, translations);
 }
