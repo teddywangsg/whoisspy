@@ -558,3 +558,56 @@ h2 {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
+
+.reset-words-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.reset-words-hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.abandon-game-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+#abandon-game-btn {
+  background: transparent;
+  color: #ff6b6b;
+  border: 2px solid #ff6b6b;
+  font-size: 14px;
+  padding: 10px 20px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+#abandon-game-btn:hover {
+  background: #ff6b6b;
+  color: white;
+  opacity: 1;
+}
+
+.abandon-hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
+}
+
+.abandon-click-count {
+  font-size: 14px;
+  color: #ff6b6b;
+  font-weight: 600;
+  margin-top: 5px;
+  display: none;
+}
+
+.abandon-click-count.active {
+  display: block;
+}

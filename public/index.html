@@ -61,6 +61,11 @@
       </div>
       
       <button type="button" class="btn btn-success" id="start-game-btn" data-i18n="startGame">Start Game</button>
+      
+      <div class="reset-words-section">
+        <button type="button" class="btn btn-secondary" id="reset-words-btn" data-i18n="resetWords">Reset Word History</button>
+        <div class="reset-words-hint" data-i18n="resetWordsHint">Clear played words to start fresh</div>
+      </div>
     </div>
     
     <div class="page" id="show-word-page">
@@ -87,6 +92,12 @@
       <div class="warning-message" id="warning-message" style="display:none;">
         <div class="warning-icon">⚠️</div>
         <div data-i18n="pleaseViewFirst">Please tap to view word first</div>
+      </div>
+      
+      <div class="abandon-game-section">
+        <button type="button" class="btn btn-danger" id="abandon-game-btn" data-i18n="abandonGame">Abandon Game</button>
+        <div class="abandon-hint" data-i18n="abandonGameHint">Tap 3 times quickly to abandon</div>
+        <div class="abandon-click-count" id="abandon-click-count">0/3</div>
       </div>
     </div>
     

@@ -100,10 +100,154 @@ const WORD_PAIRS = [
   { civilian: { zh: '走路', en: 'Walk' }, undercover: { zh: '坐车', en: 'Take Vehicle' } },
   { civilian: { zh: '德士', en: 'Taxi' }, undercover: { zh: '巴士', en: 'Bus' } },
   { civilian: { zh: '上车', en: 'Get On' }, undercover: { zh: '下车', en: 'Get Off' } },
-  { civilian: { zh: '红绿灯', en: 'Traffic Light' }, undercover: { zh: '斑马线', en: 'Zebra Crossing' } }
+  { civilian: { zh: '红绿灯', en: 'Traffic Light' }, undercover: { zh: '斑马线', en: 'Zebra Crossing' } },
+  
+  // More Local Food
+  { civilian: { zh: '海南鸡饭', en: 'Hainanese Chicken Rice' }, undercover: { zh: '叉烧饭', en: 'Char Siew Rice' } },
+  { civilian: { zh: '肉骨茶', en: 'Bak Kut Teh' }, undercover: { zh: '猪杂汤', en: 'Pig Organ Soup' } },
+  { civilian: { zh: '咖椰吐司', en: 'Kaya Toast' }, undercover: { zh: '花生吐司', en: 'Peanut Butter Toast' } },
+  { civilian: { zh: '叻沙', en: 'Laksa' }, undercover: { zh: '咖喱面', en: 'Curry Noodles' } },
+  { civilian: { zh: '沙爹', en: 'Satay' }, undercover: { zh: '烤鸡翅', en: 'BBQ Chicken Wings' } },
+  { civilian: { zh: '云吞面', en: 'Wanton Mee' }, undercover: { zh: '叉烧面', en: 'Char Siew Noodles' } },
+  { civilian: { zh: '罗惹', en: 'Rojak' }, undercover: { zh: '水果沙拉', en: 'Fruit Salad' } },
+  { civilian: { zh: '印度煎饼', en: 'Prata' }, undercover: { zh: '印度煎饼', en: 'Thosai' } },
+  { civilian: { zh: '椰浆饭', en: 'Nasi Lemak' }, undercover: { zh: '黄姜饭', en: 'Nasi Kunyit' } },
+  { civilian: { zh: '辣椒螃蟹', en: 'Chilli Crab' }, undercover: { zh: '黑胡椒蟹', en: 'Black Pepper Crab' } },
+  { civilian: { zh: '福建面', en: 'Hokkien Mee' }, undercover: { zh: '广府炒', en: 'Kwang Fu Fried' } },
+  { civilian: { zh: '卤面', en: 'Lor Mee' }, undercover: { zh: '淋面', en: 'Mee Rebus' } },
+  { civilian: { zh: '蚝煎', en: 'Oyster Omelette' }, undercover: { zh: '菜头粿', en: 'Fried Carrot Cake' } },
+  { civilian: { zh: '薄饼', en: 'Popiah' }, undercover: { zh: '春卷', en: 'Spring Roll' } },
+  { civilian: { zh: '水粿', en: 'Chwee Kueh' }, undercover: { zh: '碗粿', en: 'Bowl Kueh' } },
+  { civilian: { zh: '红豆冰', en: 'Ice Kachang' }, undercover: { zh: '摩摩喳喳', en: 'Chendol' } },
+  { civilian: { zh: '仙草', en: 'Grass Jelly' }, undercover: { zh: '爱玉冰', en: 'Aiyu Jelly' } },
+  { civilian: { zh: '甘蔗水', en: 'Sugarcane Juice' }, undercover: { zh: '椰子水', en: 'Coconut Water' } },
+  { civilian: { zh: '美禄', en: 'Milo' }, undercover: { zh: '好立克', en: 'Horlicks' } },
+  { civilian: { zh: '虎牌啤酒', en: 'Tiger Beer' }, undercover: { zh: ' Anchor啤酒', en: 'Anchor Beer' } },
+  
+  // Places & Landmarks
+  { civilian: { zh: '滨海湾', en: 'Marina Bay' }, undercover: { zh: '圣淘沙', en: 'Sentosa' } },
+  { civilian: { zh: '鱼尾狮', en: 'Merlion' }, undercover: { zh: '摩天轮', en: 'Flyer' } },
+  { civilian: { zh: '乌节路', en: 'Orchard Road' }, undercover: { zh: '武吉士', en: 'Bugis' } },
+  { civilian: { zh: '牛车水', en: 'Chinatown' }, undercover: { zh: '小印度', en: 'Little India' } },
+  { civilian: { zh: '克拉码头', en: 'Clarke Quay' }, undercover: { zh: '驳船码头', en: 'Boat Quay' } },
+  { civilian: { zh: '植物园', en: 'Botanic Gardens' }, undercover: { zh: '滨海湾花园', en: 'Gardens by the Bay' } },
+  { civilian: { zh: '动物园', en: 'Zoo' }, undercover: { zh: '夜间动物园', en: 'Night Safari' } },
+  { civilian: { zh: '飞禽公园', en: 'Bird Park' }, undercover: { zh: '河川生态园', en: 'River Safari' } },
+  { civilian: { zh: '组屋', en: 'HDB Flat' }, undercover: { zh: '公寓', en: 'Condo' } },
+  { civilian: { zh: '巴刹', en: 'Wet Market' }, undercover: { zh: '熟食中心', en: 'Hawker Centre' } },
+  { civilian: { zh: '咖啡店', en: 'Coffee Shop' }, undercover: { zh: '茶室', en: 'Teahouse' } },
+  { civilian: { zh: '麦当劳', en: 'McDonald\'s' }, undercover: { zh: '肯德基', en: 'KFC' } },
+  { civilian: { zh: '昇菘超市', en: 'Sheng Siong' }, undercover: { zh: '职总平价', en: 'NTUC FairPrice' } },
+  { civilian: { zh: '怡丰城', en: 'VivoCity' }, undercover: { zh: '新达城', en: 'Suntec City' } },
+  { civilian: { zh: '金沙酒店', en: 'Marina Bay Sands' }, undercover: { zh: '莱佛士酒店', en: 'Raffles Hotel' } },
+  { civilian: { zh: '樟宜机场', en: 'Changi Airport' }, undercover: { zh: '实里达机场', en: 'Seletar Airport' } },
+  { civilian: { zh: '东海岸', en: 'East Coast' }, undercover: { zh: '西海岸', en: 'West Coast' } },
+  { civilian: { zh: '乌敏岛', en: 'Pulau Ubin' }, undercover: { zh: '龟屿', en: 'Kusu Island' } },
+  { civilian: { zh: '南部山脊', en: 'Southern Ridges' }, undercover: { zh: '麦里芝水库', en: 'MacRitchie Reservoir' } },
+  { civilian: { zh: '福康宁公园', en: 'Fort Canning' }, undercover: { zh: '珍珠山', en: 'Pearl\'s Hill' } },
+  
+  // Education & School
+  { civilian: { zh: '小学', en: 'Primary School' }, undercover: { zh: '中学', en: 'Secondary School' } },
+  { civilian: { zh: '初中', en: 'Secondary' }, undercover: { zh: '高中', en: 'JC' } },
+  { civilian: { zh: '大学', en: 'University' }, undercover: { zh: '理工学院', en: 'Polytechnic' } },
+  { civilian: { zh: '书包', en: 'School Bag' }, undercover: { zh: '手提袋', en: 'Tote Bag' } },
+  { civilian: { zh: '铅笔', en: 'Pencil' }, undercover: { zh: '钢笔', en: 'Pen' } },
+  { civilian: { zh: '橡皮擦', en: 'Eraser' }, undercover: { zh: '涂改液', en: 'Correction Fluid' } },
+  { civilian: { zh: '尺子', en: 'Ruler' }, undercover: { zh: '量角器', en: 'Protractor' } },
+  { civilian: { zh: '课本', en: 'Textbook' }, undercover: { zh: '练习簿', en: 'Workbook' } },
+  { civilian: { zh: '考试', en: 'Exam' }, undercover: { zh: '测验', en: 'Quiz' } },
+  { civilian: { zh: '假期', en: 'Holiday' }, undercover: { zh: '周末', en: 'Weekend' } },
+  { civilian: { zh: '老师', en: 'Teacher' }, undercover: { zh: '校长', en: 'Principal' } },
+  { civilian: { zh: '同学', en: 'Classmate' }, undercover: { zh: '朋友', en: 'Friend' } },
+  { civilian: { zh: '操场', en: 'Field' }, undercover: { zh: '篮球场', en: 'Basketball Court' } },
+  { civilian: { zh: '食堂', en: 'Canteen' }, undercover: { zh: '图书馆', en: 'Library' } },
+  { civilian: { zh: '校服', en: 'Uniform' }, undercover: { zh: '便服', en: 'Casual Wear' } },
+  
+  // Body Parts & Health
+  { civilian: { zh: '眼睛', en: 'Eyes' }, undercover: { zh: '眉毛', en: 'Eyebrows' } },
+  { civilian: { zh: '鼻子', en: 'Nose' }, undercover: { zh: '耳朵', en: 'Ears' } },
+  { civilian: { zh: '嘴巴', en: 'Mouth' }, undercover: { zh: '嘴唇', en: 'Lips' } },
+  { civilian: { zh: '手指', en: 'Fingers' }, undercover: { zh: '脚趾', en: 'Toes' } },
+  { civilian: { zh: '头发', en: 'Hair' }, undercover: { zh: '胡须', en: 'Beard' } },
+  { civilian: { zh: '膝盖', en: 'Knee' }, undercover: { zh: '手肘', en: 'Elbow' } },
+  { civilian: { zh: '肚子', en: 'Stomach' }, undercover: { zh: '腰', en: 'Waist' } },
+  { civilian: { zh: '医生', en: 'Doctor' }, undercover: { zh: '护士', en: 'Nurse' } },
+  { civilian: { zh: '医院', en: 'Hospital' }, undercover: { zh: '诊所', en: 'Clinic' } },
+  { civilian: { zh: '发烧', en: 'Fever' }, undercover: { zh: '感冒', en: 'Cold' } },
+  { civilian: { zh: '咳嗽', en: 'Cough' }, undercover: { zh: '打喷嚏', en: 'Sneeze' } },
+  { civilian: { zh: '药丸', en: 'Pill' }, undercover: { zh: '药水', en: 'Syrup' } },
+  { civilian: { zh: '绷带', en: 'Bandage' }, undercover: { zh: '胶布', en: 'Plaster' } },
+  { civilian: { zh: '中医', en: 'TCM' }, undercover: { zh: '西医', en: 'Western Medicine' } },
+  { civilian: { zh: '针灸', en: 'Acupuncture' }, undercover: { zh: '拔罐', en: 'Cupping' } },
+  
+  // Professions
+  { civilian: { zh: '警察', en: 'Police' }, undercover: { zh: '保安', en: 'Security Guard' } },
+  { civilian: { zh: '消防员', en: 'Firefighter' }, undercover: { zh: '救护员', en: 'Paramedic' } },
+  { civilian: { zh: '邮差', en: 'Postman' }, undercover: { zh: '快递', en: 'Delivery Man' } },
+  { civilian: { zh: '司机', en: 'Driver' }, undercover: { zh: '车长', en: 'Captain' } },
+  { civilian: { zh: '厨师', en: 'Chef' }, undercover: { zh: '帮厨', en: 'Cook' } },
+  { civilian: { zh: '理发师', en: 'Barber' }, undercover: { zh: '美容师', en: 'Beautician' } },
+  { civilian: { zh: '律师', en: 'Lawyer' }, undercover: { zh: '法官', en: 'Judge' } },
+  { civilian: { zh: '会计', en: 'Accountant' }, undercover: { zh: '出纳', en: 'Cashier' } },
+  { civilian: { zh: '工程师', en: 'Engineer' }, undercover: { zh: '技术员', en: 'Technician' } },
+  { civilian: { zh: ' salesman', en: 'Salesman' }, undercover: { zh: '促销员', en: 'Promoter' } },
+  { civilian: { zh: '园丁', en: 'Gardener' }, undercover: { zh: '农夫', en: 'Farmer' } },
+  { civilian: { zh: '保姆', en: 'Maid' }, undercover: { zh: '看护', en: 'Caregiver' } },
+  { civilian: { zh: '导游', en: 'Tour Guide' }, undercover: { zh: '领队', en: 'Team Leader' } },
+  { civilian: { zh: '摄影师', en: 'Photographer' }, undercover: { zh: '摄像师', en: 'Videographer' } },
+  { civilian: { zh: '演员', en: 'Actor' }, undercover: { zh: '歌手', en: 'Singer' } },
+  
+  // Electronics & Technology
+  { civilian: { zh: '手机', en: 'Mobile Phone' }, undercover: { zh: '平板电脑', en: 'Tablet' } },
+  { civilian: { zh: '电脑', en: 'Computer' }, undercover: { zh: '笔记本', en: 'Laptop' } },
+  { civilian: { zh: '相机', en: 'Camera' }, undercover: { zh: '摄像机', en: 'Video Camera' } },
+  { civilian: { zh: '耳机', en: 'Earphones' }, undercover: { zh: '音响', en: 'Speakers' } },
+  { civilian: { zh: '电视', en: 'TV' }, undercover: { zh: '显示器', en: 'Monitor' } },
+  { civilian: { zh: '冰箱', en: 'Fridge' }, undercover: { zh: '冰柜', en: 'Freezer' } },
+  { civilian: { zh: '洗衣机', en: 'Washing Machine' }, undercover: { zh: '烘干机', en: 'Dryer' } },
+  { civilian: { zh: '冷气机', en: 'Aircon' }, undercover: { zh: '风扇', en: 'Fan' } },
+  { civilian: { zh: '电邮', en: 'Email' }, undercover: { zh: '简讯', en: 'SMS' } },
+  { civilian: { zh: '面子书', en: 'Facebook' }, undercover: { zh: '照片墙', en: 'Instagram' } },
+  { civilian: { zh: '优管', en: 'YouTube' }, undercover: { zh: '网飞', en: 'Netflix' } },
+  { civilian: { zh: '充电器', en: 'Charger' }, undercover: { zh: '电池', en: 'Battery' } },
+  { civilian: { zh: '数据线', en: 'Cable' }, undercover: { zh: '插头', en: 'Plug' } },
+  { civilian: { zh: '遥控器', en: 'Remote' }, undercover: { zh: '鼠标', en: 'Mouse' } },
+  { civilian: { zh: '键盘', en: 'Keyboard' }, undercover: { zh: '打字机', en: 'Typewriter' } },
+  
+  // Nature & Environment
+  { civilian: { zh: '山', en: 'Mountain' }, undercover: { zh: '丘', en: 'Hill' } },
+  { civilian: { zh: '河', en: 'River' }, undercover: { zh: '溪', en: 'Stream' } },
+  { civilian: { zh: '湖', en: 'Lake' }, undercover: { zh: '池塘', en: 'Pond' } },
+  { civilian: { zh: '海', en: 'Sea' }, undercover: { zh: '洋', en: 'Ocean' } },
+  { civilian: { zh: '沙滩', en: 'Beach' }, undercover: { zh: '海岸', en: 'Coast' } },
+  { civilian: { zh: '森林', en: 'Forest' }, undercover: { zh: '丛林', en: 'Jungle' } },
+  { civilian: { zh: '花', en: 'Flower' }, undercover: { zh: '叶', en: 'Leaf' } },
+  { civilian: { zh: '树', en: 'Tree' }, undercover: { zh: '灌木', en: 'Bush' } },
+  { civilian: { zh: '草', en: 'Grass' }, undercover: { zh: '苔藓', en: 'Moss' } },
+  { civilian: { zh: '云', en: 'Cloud' }, undercover: { zh: '雾', en: 'Fog' } },
+  { civilian: { zh: '风', en: 'Wind' }, undercover: { zh: '台风', en: 'Typhoon' } },
+  { civilian: { zh: '雷', en: 'Thunder' }, undercover: { zh: '闪电', en: 'Lightning' } },
+  { civilian: { zh: '雪', en: 'Snow' }, undercover: { zh: '冰雹', en: 'Hail' } },
+  { civilian: { zh: '彩虹', en: 'Rainbow' }, undercover: { zh: '极光', en: 'Aurora' } },
+  { civilian: { zh: '星星', en: 'Star' }, undercover: { zh: '行星', en: 'Planet' } }
 ];
 
-function getRandomWordPair() {
-  const index = Math.floor(Math.random() * WORD_PAIRS.length);
-  return WORD_PAIRS[index];
+function getRandomWordPair(excludeIds = []) {
+  const availableIndices = WORD_PAIRS.map((_, index) => index).filter(
+    index => !excludeIds.includes(index)
+  );
+  
+  if (availableIndices.length === 0) {
+    return { wordPair: WORD_PAIRS[Math.floor(Math.random() * WORD_PAIRS.length)], wordId: -1 };
+  }
+  
+  const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+  return { wordPair: WORD_PAIRS[randomIndex], wordId: randomIndex };
+}
+
+function getWordPairById(id) {
+  if (id >= 0 && id < WORD_PAIRS.length) {
+    return WORD_PAIRS[id];
+  }
+  return null;
 }

@@ -1,5 +1,5 @@
 const DB_NAME = 'UndercoverGameDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 class GameDatabase {
   constructor() {
@@ -36,15 +36,19 @@ class GameDatabase {
         if (!db.objectStoreNames.contains('settings')) {
           db.createObjectStore('settings', { keyPath: 'key' });
         }
+        
+        if (!db.objectStoreNames.contains('playedWords')) {
+          db.createObjectStore('playedWords', { keyPath: 'id' });
+        }
       };
     });
   }
 
-  async addPlayer(name) {
+  async addPlayer(playerData) {
     return new Promise((resolve, reject) => {
       const tx = this.db.transaction('players', 'readwrite');
       const store = tx.objectStore('players');
-      const request = store.add({ name, eliminated: false });
+      const request = store.add({ ...playerData, eliminated: false });
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
@@ -206,6 +210,63 @@ class GameDatabase {
       const store = tx.objectStore('settings');
       const request = store.get(key);
       request.onsuccess = () => resolve(request.result ? request.result.value : null);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async addPlayedWord(wordId) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('playedWords', 'readwrite');
+      const store = tx.objectStore('playedWords');
+      const request = store.put({ 
+        id: wordId, 
+        playedAt: new Date().toISOString() 
+      });
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async getPlayedWords() {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('playedWords', 'readonly');
+      const store = tx.objectStore('playedWords');
+      const request = store.getAll();
+      request.onsuccess = () => resolve(request.result.map(item => item.id));
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async clearPlayedWords() {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('playedWords', 'readwrite');
+      const store = tx.objectStore('playedWords');
+      const request = store.clear();
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async getActiveGame() {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('games', 'readonly');
+      const store = tx.objectStore('games');
+      const request = store.getAll();
+      request.onsuccess = () => {
+        const games = request.result;
+        const activeGame = games.find(g => g.status === 'active');
+        resolve(activeGame || null);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async deleteGame(id) {
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction('games', 'readwrite');
+      const store = tx.objectStore('games');
+      const request = store.delete(id);
+      request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });
   }

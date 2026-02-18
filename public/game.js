@@ -58,7 +58,16 @@ const i18n = {
     gameDescription3: '📱 传递手机看词',
     gameEnded: '游戏已结束',
     playerCountError: '玩家数量必须在4-12人之间',
-    undercoverCountError: '卧底数量必须在1-{0}之间'
+    undercoverCountError: '卧底数量必须在1-{0}之间',
+    resetWords: '重置词库',
+    resetWordsHint: '清除已玩过的词汇，重新开始',
+    resetWordsConfirm: '确定要重置词库吗？所有已玩过的词汇记录将被清除。',
+    wordsResetSuccess: '词库已重置！',
+    abandonGame: '放弃游戏',
+    abandonGameHint: '快速点击3次以放弃游戏',
+    abandonConfirm: '确定要放弃当前游戏吗？所有进度将丢失。',
+    resumeGame: '继续游戏',
+    clickToReveal: '点击显示词语'
   },
   en: {
     title: 'Who is the Spy',
@@ -112,7 +121,16 @@ const i18n = {
     gameDescription3: '📱 Pass phone to view word',
     gameEnded: 'Game has ended',
     playerCountError: 'Player count must be between 4-12',
-    undercoverCountError: 'Spy count must be between 1-{0}'
+    undercoverCountError: 'Spy count must be between 1-{0}',
+    resetWords: 'Reset Word History',
+    resetWordsHint: 'Clear played words to start fresh',
+    resetWordsConfirm: 'Are you sure you want to reset the word history? All played word records will be cleared.',
+    wordsResetSuccess: 'Word history reset!',
+    abandonGame: 'Abandon Game',
+    abandonGameHint: 'Tap 3 times quickly to abandon',
+    abandonConfirm: 'Are you sure you want to abandon the current game? All progress will be lost.',
+    resumeGame: 'Resume Game',
+    clickToReveal: 'Tap to reveal word'
   }
 };
 
@@ -126,14 +144,96 @@ function getBilingualWord(wordObj) {
 
 async function init() {
   await gameDB.init();
-  
+
   const savedLang = await gameDB.getSetting('language');
   if (savedLang) {
     currentLang = savedLang;
   }
-  
+
   setupSelectors();
   updateLanguage();
+
+  await restoreGameState();
+}
+
+async function restoreGameState() {
+  const activeGame = await gameDB.getActiveGame();
+  if (!activeGame) {
+    return;
+  }
+
+  const players = await gameDB.getAllPlayers();
+  if (players.length === 0) {
+    await gameDB.deleteGame(activeGame.id);
+    return;
+  }
+
+  currentGame = {
+    id: activeGame.id,
+    playerCount: activeGame.playerCount,
+    undercoverCount: activeGame.undercoverCount,
+    wordPair: activeGame.wordPair,
+    players: players,
+    currentRound: activeGame.currentRound || 1,
+    eliminatedPlayers: activeGame.eliminatedPlayers || [],
+    gameStatus: activeGame.gameStatus,
+    winner: activeGame.winner
+  };
+
+  currentPlayerIndex = activeGame.currentPlayerIndex || 0;
+  hasShownWord = false;
+
+  const savedWordState = await gameDB.getSetting(`game_${activeGame.id}_wordState`);
+  if (savedWordState) {
+    hasShownWord = savedWordState.hasShownWord || false;
+  }
+
+  restoreUIState(activeGame.currentPhase || 'show-word');
+}
+
+function restoreUIState(phase) {
+  switch (phase) {
+    case 'show-word':
+      showPage('show-word');
+      showCurrentPlayerWord();
+      break;
+    case 'discussion':
+      showPage('discussion');
+      break;
+    case 'vote':
+      showPage('vote');
+      renderEliminationList();
+      break;
+    case 'eliminate-result':
+      showPage('eliminate-result');
+      break;
+    case 'result':
+      if (currentGame.gameStatus === 'ended') {
+        showFinalResult();
+      } else {
+        showPage('setup');
+      }
+      break;
+    default:
+      showPage('setup');
+  }
+}
+
+async function saveGameProgress(phase) {
+  if (!currentGame || !currentGame.id) return;
+
+  await gameDB.updateGame(currentGame.id, {
+    currentPlayerIndex: currentPlayerIndex,
+    currentPhase: phase,
+    currentRound: currentGame.currentRound,
+    eliminatedPlayers: currentGame.eliminatedPlayers,
+    gameStatus: currentGame.gameStatus,
+    winner: currentGame.winner
+  });
+
+  await gameDB.saveSetting(`game_${currentGame.id}_wordState`, {
+    hasShownWord: hasShownWord
+  });
 }
 
 function toggleLanguage() {
@@ -224,10 +324,28 @@ function updateSelectedInfo() {
 
 async function startGame() {
   await gameDB.clearAllData();
-  
-  const wordPair = getRandomWordPair();
-  
+
+  const playedWordIds = await gameDB.getPlayedWords();
+  const { wordPair, wordId } = getRandomWordPair(playedWordIds);
+
+  if (wordId >= 0) {
+    await gameDB.addPlayedWord(wordId);
+  }
+
+  const gameId = await gameDB.createGame({
+    playerCount: selectedPlayerCount,
+    undercoverCount: selectedUndercoverCount,
+    wordPair: wordPair,
+    currentRound: 1,
+    eliminatedPlayers: [],
+    gameStatus: 'active',
+    winner: null,
+    currentPlayerIndex: 0,
+    currentPhase: 'show-word'
+  });
+
   currentGame = {
+    id: gameId,
     playerCount: selectedPlayerCount,
     undercoverCount: selectedUndercoverCount,
     wordPair: wordPair,
@@ -237,30 +355,29 @@ async function startGame() {
     gameStatus: 'active',
     winner: null
   };
-  
+
+  const shuffledIndices = shuffleArray([...Array(selectedPlayerCount).keys()]);
+
   for (let i = 1; i <= selectedPlayerCount; i++) {
-    const id = await gameDB.addPlayer(`${t('player')}${i}`);
+    const isUndercover = shuffledIndices.indexOf(i - 1) < selectedUndercoverCount;
+    const playerData = {
+      name: `${t('player')}${i}`,
+      role: isUndercover ? 'undercover' : 'civilian',
+      word: isUndercover ? wordPair.undercover : wordPair.civilian
+    };
+    const id = await gameDB.addPlayer(playerData);
     currentGame.players.push({
       id: id,
-      name: `${t('player')}${i}`,
+      name: playerData.name,
       eliminated: false,
-      role: null,
-      word: null
+      role: playerData.role,
+      word: playerData.word
     });
   }
-  
-  const shuffledIndices = shuffleArray([...Array(selectedPlayerCount).keys()]);
-  
-  for (let i = 0; i < selectedPlayerCount; i++) {
-    const playerIndex = shuffledIndices[i];
-    const isUndercover = i < selectedUndercoverCount;
-    currentGame.players[playerIndex].role = isUndercover ? 'undercover' : 'civilian';
-    currentGame.players[playerIndex].word = isUndercover ? wordPair.undercover : wordPair.civilian;
-  }
-  
+
   currentPlayerIndex = 0;
   hasShownWord = false;
-  
+
   showPage('show-word');
   showCurrentPlayerWord();
 }
@@ -274,34 +391,38 @@ function shuffleArray(array) {
   return newArray;
 }
 
-function showCurrentPlayerWord() {
+async function showCurrentPlayerWord() {
   const activePlayers = currentGame.players.filter(p => !p.eliminated);
-  
+
   if (currentPlayerIndex >= activePlayers.length) {
     showPage('discussion');
+    await saveGameProgress('discussion');
     return;
   }
-  
+
   const player = activePlayers[currentPlayerIndex];
-  
+
   $('#current-player-name').text(player.name);
   $('#word-display').hide();
   $('#word-cover').show();
   $('#word-text').text(getBilingualWord(player.word));
   $('#role-badge').hide();
-  
+
   hasShownWord = false;
+  setupAbandonButton();
 }
 
-function revealWord() {
+async function revealWord() {
   $('#word-cover').hide();
   $('#word-display').show();
   $('#next-word-btn').show();
   $('#warning-message').hide();
   hasShownWord = true;
+
+  await saveGameProgress('show-word');
 }
 
-function nextPlayer() {
+async function nextPlayer() {
   if (!hasShownWord) {
     $('#warning-message').show();
     return;
@@ -310,6 +431,8 @@ function nextPlayer() {
   $('#next-word-btn').hide();
   hasShownWord = false;
   currentPlayerIndex++;
+
+  await saveGameProgress('show-word');
   showCurrentPlayerWord();
 }
 
@@ -318,9 +441,10 @@ function showPage(pageId) {
   $(`#${pageId}-page`).addClass('active');
 }
 
-function startElimination() {
+async function startElimination() {
   showPage('vote');
   renderEliminationList();
+  await saveGameProgress('vote');
 }
 
 function renderEliminationList() {
@@ -364,22 +488,22 @@ async function eliminatePlayer(playerId) {
     });
 
     await gameDB.markPlayerEliminated(playerId);
-    showEliminationResult(player);
+    await showEliminationResult(player);
   } catch (error) {
     console.error('eliminatePlayer error:', error);
     alert(t('eliminationFailed') + ': ' + error.message);
   }
 }
 
-function showEliminationResult(player) {
+async function showEliminationResult(player) {
   showPage('eliminate-result');
-  
+
   $('#eliminated-player-name').text(`${player.name} ${t('eliminated')}`);
   $('#eliminated-player-role').hide();
   $('#eliminated-player-word').hide();
-  
+
   const gameEndResult = checkGameEnd();
-  
+
   if (gameEndResult.ended) {
     currentGame.gameStatus = 'ended';
     currentGame.winner = gameEndResult.winner;
@@ -393,6 +517,8 @@ function showEliminationResult(player) {
     $('#continue-btn').show();
     $('#view-final-result-btn').hide();
   }
+
+  await saveGameProgress('eliminate-result');
 }
 
 function checkGameEnd() {
@@ -418,18 +544,19 @@ function checkGameEnd() {
   return { ended: false, winner: null, message: null };
 }
 
-function nextRound() {
+async function nextRound() {
   if (currentGame.gameStatus === 'ended') {
     return;
   }
-  
+
   currentGame.currentRound++;
-  
+
   showPage('vote');
   renderEliminationList();
+  await saveGameProgress('vote');
 }
 
-function showFinalResult() {
+async function showFinalResult() {
   showPage('result');
 
   if (currentGame.winner === 'civilian') {
@@ -459,6 +586,7 @@ function showFinalResult() {
   });
 
   $('#reveal-list').html(revealHtml);
+  await saveGameProgress('result');
 }
 
 async function resetGame() {
@@ -467,6 +595,52 @@ async function resetGame() {
   currentPlayerIndex = 0;
   hasShownWord = false;
   showPage('setup');
+}
+
+async function resetPlayedWords() {
+  if (confirm(t('resetWordsConfirm'))) {
+    await gameDB.clearPlayedWords();
+    alert(t('wordsResetSuccess'));
+  }
+}
+
+let abandonClickCount = 0;
+let abandonClickTimer = null;
+
+function setupAbandonButton() {
+  abandonClickCount = 0;
+  $('#abandon-click-count').text('0/3').removeClass('active');
+}
+
+async function handleAbandonClick() {
+  abandonClickCount++;
+  $('#abandon-click-count').text(`${abandonClickCount}/3`).addClass('active');
+
+  if (abandonClickTimer) {
+    clearTimeout(abandonClickTimer);
+  }
+
+  if (abandonClickCount >= 3) {
+    if (confirm(t('abandonConfirm'))) {
+      if (currentGame && currentGame.id) {
+        await gameDB.deleteGame(currentGame.id);
+      }
+      await gameDB.clearPlayers();
+      currentGame = null;
+      currentPlayerIndex = 0;
+      hasShownWord = false;
+      abandonClickCount = 0;
+      showPage('setup');
+    } else {
+      abandonClickCount = 0;
+      $('#abandon-click-count').text('0/3').removeClass('active');
+    }
+  } else {
+    abandonClickTimer = setTimeout(() => {
+      abandonClickCount = 0;
+      $('#abandon-click-count').text('0/3').removeClass('active');
+    }, 2000);
+  }
 }
 
 $(document).ready(function() {
@@ -481,4 +655,6 @@ $(document).ready(function() {
   $('#view-final-result-btn').click(showFinalResult);
   $('#play-again-btn').click(resetGame);
   $('#lang-btn').click(toggleLanguage);
+  $('#reset-words-btn').click(resetPlayedWords);
+  $('#abandon-game-btn').click(handleAbandonClick);
 });
